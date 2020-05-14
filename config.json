@@ -1,0 +1,11 @@
+{
+    "postgres": {
+        "url": "localhost",
+        "port": 5432,
+        "username": "user",
+        "password": "password"
+    },
+    "app": {
+        "port": 8080
+    }
+}

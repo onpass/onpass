@@ -1,0 +1,38 @@
+{
+    "meta": {
+        "version": 1
+    },
+    "get": {
+        "user": {
+            "by_id": "/users/byid"
+        },
+        "entry": {
+            "by_id": "/entries/byid"
+        }
+    },
+    "post": {
+        "user": {
+            "register": "/users/create",
+            "login": "/users/login"
+        },
+        "entry": {
+            "create": "/entries/create"
+        }
+    },
+    "put": {
+        "user": {
+            "update": "/users/update"
+        },
+        "entry": {
+            "update": "/entries/update"
+        }
+    },
+    "delete": {
+        "user": {
+            "update": "/users/delete"
+        },
+        "entry": {
+            "update": "/entries/delete"
+        }
+    }
+}

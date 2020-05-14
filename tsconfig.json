@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "ES3",
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node"
+    },
+    "files": [
+        "app.ts"
+    ],
+    "include": [
+        "src/**/*"
+    ]
+}
