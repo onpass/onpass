@@ -1,32 +1,31 @@
 {
-  "name": "onpass-server",
-  "version": "0.1.0",
-  "description": "The backend for onpass",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/onpass/onpass-server.git"
-  },
-  "license": "AGPL-3.0",
-  "main": "app.js",
-  "bugs": {
-    "url": "https://github.com/onpass/onpass-server/issues"
-  },
-  "homepage": "https://github.com/onpass/onpass-server",
-  "dependencies": {
-    "aes256": "^1.0.4",
-    "bcrypt": "^4.0.1",
-    "body-parser": "^1.19.0",
-    "cookie-parser": "^1.4.5",
-    "express": "^4.17.1",
-    "pg": "^7.18.2",
-    "pg-hstore": "^2.3.3",
-    "sequelize": "^5.21.7"
-  },
-  "devDependencies": {
-    "@types/bcrypt": "^3.0.0",
-    "@types/express": "^4.17.6"
-  },
-  "scripts": {
-    "test": "npm run unit"
-  }
+   "name": "onpass-server",
+   "version": "0.0.1",
+   "description": "Online password manager",
+   "devDependencies": {
+      "@types/bcrypt": "^3.0.0",
+      "@types/cookie-parser": "^1.4.2",
+      "@types/express": "^4.17.6",
+      "@types/express-session": "^1.17.0",
+      "@types/node": "^8.0.29",
+      "@types/uuid": "^7.0.3",
+      "ts-node": "3.3.0",
+      "typescript": "3.3.3333"
+   },
+   "dependencies": {
+      "@types/jsonwebtoken": "^8.5.0",
+      "aes256": "^1.0.4",
+      "bcrypt": "^4.0.1",
+      "body-parser": "^1.19.0",
+      "cookie-parser": "^1.4.5",
+      "express": "^4.17.1",
+      "express-session": "^1.17.1",
+      "jsonwebtoken": "^8.5.1",
+      "reflect-metadata": "^0.1.10",
+      "typeorm": "0.2.24",
+      "uuid": "^8.0.0"
+   },
+   "scripts": {
+      "start": "ts-node src/index.ts"
+   }
 }
