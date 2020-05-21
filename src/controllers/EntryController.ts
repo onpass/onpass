@@ -58,7 +58,7 @@ class EntryController {
                 where: { user: userId },
                 select: ["id", "website", "login", "password"]
             });
-            res.send(entries);
+            res.send(entries.map(v => v.decryptData));
         } catch (error) {
             res.status(404).send("User has no entries")
         }
@@ -71,7 +71,7 @@ class EntryController {
             const entry = await entryRepository.findOneOrFail(req.body.id, {
                 select: ["id", "website", "login", "password"]
             });
-            res.send(entry);
+            res.send(entry.decryptData());
         } catch (error) {
             res.status(404).send("Entry not found")
         }
@@ -99,6 +99,7 @@ class EntryController {
 
         entry.user = user;
 
+        entry.encryptData();
         const entryRepository = getRepository(Entry);
         try {
             await entryRepository.save(entry);
@@ -124,9 +125,13 @@ class EntryController {
             res.status(404).send("Entry not found")
         }
 
+        entry.decryptData();
+
         entry.website = req.body.website ? req.body.website : entry.website;
         entry.login = req.body.login ? req.body.login : entry.login;
         entry.password = req.body.password ? req.body.password : entry.password;
+
+        entry.encryptData();
 
         try {
             await entryRepository.save(entry);
