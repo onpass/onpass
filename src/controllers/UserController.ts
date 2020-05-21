@@ -33,11 +33,14 @@ class UserController {
 
     static newUser = async (req: Request, res: Response) => {
         const { username, password, email } = req.body;
+        
+        console.log(req.body);
+        
         let user = new User();
         user.username = username;
         user.password = password;
         user.email = email;
-
+        
         user.hashPassword();
 
         const userRepository = getRepository(User);

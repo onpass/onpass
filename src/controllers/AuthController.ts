@@ -10,7 +10,7 @@ class AuthController {
         //Check if username and password are set
         let { username, password } = req.body;
         if (!(username && password)) {
-            res.status(400).send("Pass");
+            res.status(400).send("Username or password not set");
         }
 
         //Get user from database
@@ -55,4 +55,5 @@ class AuthController {
             res.status(401).send();
     }
 }
+
 export default AuthController;

@@ -19,16 +19,18 @@ export class Entry {
 
     @ManyToOne(type => User, user => user.entries)
     user: User
-
+    
     encryptData() {
-        let cipher = aes256.cipher(this.user.password);
-        this.login = cipher.encrypt(this.login);
-        this.password = cipher.encrypt(this.password);
+        let key = this.user.password
+        console.log(key)
+        this.login = aes256.encrypt(key, this.login);
+        this.password = aes256.encrypt(key, this.password);
     }
 
     decryptData() {
-        let cipher = aes256.cipher(this.user.password);
-        this.login = cipher.decrypt(this.login);
-        this.password = cipher.decrypt(this.password);
+        let key = this.user.password
+        console.log(key)
+        this.login = aes256.decrypt(key, this.login);
+        this.password = aes256.decrypt(key, this.password);
     }
 }

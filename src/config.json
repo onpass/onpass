@@ -2,11 +2,16 @@
     "postgres": {
         "url": "localhost",
         "port": 5432,
-        "username": "postgres",
-        "password": "password"
+        "username": "dog",
+        "password": "securepassword",
+        "database": "onpass"
     },
     "app": {
-        "port": 8080,
-        "secret": "nevergonnagiveyouup"
+        "port": 62664,
+        "secret": "smashmouthallstar",
+        "corsWhitelist": [
+            "http://kotobank.ch",
+            "http://localhost"
+        ]
     }
 }
