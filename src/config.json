@@ -2,7 +2,7 @@
     "postgres": {
         "url": "localhost",
         "port": 5432,
-        "username": "user",
+        "username": "postgres",
         "password": "password"
     },
     "app": {

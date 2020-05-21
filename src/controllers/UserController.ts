@@ -17,13 +17,13 @@ class UserController {
 
     static getOneById = async (req: Request, res: Response) => {
         //Get the ID from the url
-        const id: number = req.params.id as any;
+        const id: number = req.body.id || req.body.userId;
 
         //Get the user from database
         const userRepository = getRepository(User);
         try {
             const user = await userRepository.findOneOrFail(id, {
-                select: ["id", "username", "role"]
+                select: ["id", "username"]
             });
             res.send(user);
         } catch (error) {
@@ -32,10 +32,11 @@ class UserController {
     };
 
     static newUser = async (req: Request, res: Response) => {
-        let { username, password, role } = req.body;
+        const { username, password, email } = req.body;
         let user = new User();
         user.username = username;
         user.password = password;
+        user.email = email;
 
         user.hashPassword();
 
@@ -43,20 +44,17 @@ class UserController {
         try {
             await userRepository.save(user);
         } catch (e) {
-            res.status(409).send("username already in use");
-            return;
+            return res.status(409).send("Username already in use");
         }
 
         res.status(201).send("User created");
     };
 
     static editUser = async (req: Request, res: Response) => {
-        const id = req.params.id;
-
-        const { username } = req.body;
+        const id = req.body.id;
 
         const userRepository = getRepository(User);
-        let user;
+        let user: User;
         try {
             user = await userRepository.findOneOrFail(id);
         } catch (error) {
@@ -65,33 +63,37 @@ class UserController {
             return;
         }
 
-        user.username = username;
+        user.username = req.body.username ? req.body.username : user.username;
+        user.email = req.body.email ? req.body.email : user.email;
 
         try {
             await userRepository.save(user);
         } catch (e) {
-            res.status(409).send("username already in use");
-            return;
+            return res.status(409).send("Username already in use");
         }
-        
+
         res.status(204).send();
     };
 
     static deleteUser = async (req: Request, res: Response) => {
-        const id = req.params.id;
+        const id = req.body.id;
 
         const userRepository = getRepository(User);
         let user: User;
         try {
             user = await userRepository.findOneOrFail(id);
         } catch (error) {
-            res.status(404).send("User not found");
-            return;
+            return res.status(404).send("User not found");
         }
-        userRepository.delete(id);
+        userRepository.delete(user);
 
         res.status(204).send();
     };
+
+    static isLoggedIn = async (req: Request, res: Response) => {
+        if (!res.locals.jwtPayload) res.status(403).send(false);
+        else res.status(200).send(true);
+    }
 };
 
 export default UserController;

@@ -10,7 +10,7 @@ class AuthController {
         //Check if username and password are set
         let { username, password } = req.body;
         if (!(username && password)) {
-            res.status(400).send();
+            res.status(400).send("Pass");
         }
 
         //Get user from database
@@ -19,58 +19,40 @@ class AuthController {
         try {
             user = await userRepository.findOneOrFail({ where: { username } });
         } catch (error) {
-            res.status(401).send();
+            res.status(401).send("User not found");
         }
 
-        //Check if encrypted password match
-        if (!user.checkIfUnencryptedPasswordIsValid(password)) {
-            res.status(401).send();
+        //Check if passwords match
+        if (!user.checkPassword(password)) {
+            res.status(401).send("Password is incorrect");
             return;
         }
 
-        //Sing JWT, valid for 1 hour
+        //Send JWT, valid for 1 hour
         const token = jwt.sign(
             { userId: user.id, username: user.username },
-            config.jwtSecret,
+            config.app.secret,
             { expiresIn: "1h" }
         );
 
         //Send the jwt in the response
-        res.send(token);
+        res.cookie('onpass', token, { expires: new Date(Date.now() + 60 * 60 * 1000), httpOnly: true })
+            .status(204)
+            .send();
     };
 
-    static changePassword = async (req: Request, res: Response) => {
-        //Get ID from JWT
-        const id = res.locals.jwtPayload.userId;
-
-        //Get parameters from the body
-        const { oldPassword, newPassword } = req.body;
-        if (!(oldPassword && newPassword)) {
-            res.status(400).send();
-        }
-
-        //Get user from the database
-        const userRepository = getRepository(User);
-        let user: User;
-        try {
-            user = await userRepository.findOneOrFail(id);
-        } catch (id) {
+    static logout = async (req: Request, res: Response) => {
+        if(req.cookies['onpass'])
+            res.clearCookie('onpass').status(204).send();
+        else 
             res.status(401).send();
-        }
+    };;
 
-        //Check if old password matchs
-        if (!user.checkIfUnencryptedPasswordIsValid(oldPassword)) {
+    static check = async (req: Request, res: Response) => {
+        if (req.cookies['onpass'])
+            res.status(204).send();
+        else
             res.status(401).send();
-            return;
-        }
-
-        //Validate de model (password lenght)
-        user.password = newPassword;
-        //Hash the new password and save
-        user.hashPassword();
-        userRepository.save(user);
-
-        res.status(204).send();
-    };
+    }
 }
 export default AuthController;

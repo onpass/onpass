@@ -2,23 +2,16 @@ import { Request, Response, NextFunction } from "express";
 import * as jwt from "jsonwebtoken";
 const config = require("../config.json");
 
-export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
-    const token = <string>req.headers["auth"];
+export const checkJwt = async (req: Request, res: Response, next: NextFunction) => {
+    const token = req.cookies.onpass || '';
     let jwtPayload;
 
     try {
-        jwtPayload = <any>jwt.verify(token, config.jwtSecret);
+        jwtPayload = <any>jwt.verify(token, config.app.secret);
         res.locals.jwtPayload = jwtPayload;
-    } catch (error) {
-        res.status(401).send();
-        return;
+    } catch (e) {
+        return res.status(401).send(e.toString());
     }
-
-    const { userId, username } = jwtPayload;
-    const newToken = jwt.sign({ userId, username }, config.jwtSecret, {
-        expiresIn: "1h"
-    });
-    res.setHeader("token", newToken);
 
     next();
 };
