@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany, Unique} from "typeorm";
 import {Entry} from "./Entry"
 import bcrypt from 'bcrypt'
 
@@ -8,7 +8,9 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({
+        unique: true
+    })
     username: string;
 
     @Column()

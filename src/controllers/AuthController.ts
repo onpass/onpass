@@ -42,17 +42,17 @@ class AuthController {
     };
 
     static logout = async (req: Request, res: Response) => {
-        if(req.cookies['onpass'])
+        if(req.cookies['onpass']) // If a cookie exists, delete it, which will log the user out
             res.clearCookie('onpass').status(204).send();
         else 
-            res.status(401).send();
+            res.status(401).send(); // If the cookie doesn't exist, send an error
     };;
 
     static check = async (req: Request, res: Response) => {
         if (req.cookies['onpass'])
-            res.status(204).send();
+            res.status(204).send(); // send a success if a user exists
         else
-            res.status(401).send();
+            res.status(401).send(); // and an error if he doesn't
     }
 }
 

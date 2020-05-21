@@ -21,5 +21,6 @@ router.delete("/:id([0-9]+)", [checkJwt], EntryController.deleteEntry);
 
 //Generate new password
 router.get("/new_password", EntryController.newPassword);
+router.post("/new_password", EntryController.newPassword);
 
 export default router;
