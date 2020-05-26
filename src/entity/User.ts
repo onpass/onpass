@@ -22,8 +22,11 @@ export class User {
     @OneToMany(type => Entry, entry => entry.user)
     entries: Entry[]
 
-    hashPassword() {
-        this.password = bcrypt.hashSync(this.password, 8);
+    hashPassword(salt: string = "") {
+        if (salt == "")
+            this.password = bcrypt.hashSync(this.password, 8);
+        else
+            this.password = bcrypt.hashSync(this.password, salt);
     }
     
     checkPassword(unencryptedPassword: string): boolean {
