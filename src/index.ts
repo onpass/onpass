@@ -1,3 +1,7 @@
+/**
+ * @internal
+ * @packageDocumentation
+ */
 import { createConnection } from "typeorm";
 import express, { NextFunction } from "express";
 import { Request, Response } from "express";
@@ -38,7 +42,11 @@ createConnection({
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(cookieParser());
-    app.use(session({ secret: config.app.secret }));
+    app.use(session({
+        secret: config.app.secret,
+        resave: true,
+        saveUninitialized: true
+    }));
 
     // Create a middleware to log incoming requests
     app.use((req: Request, res: Response, next: NextFunction) => {

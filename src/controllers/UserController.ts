@@ -3,8 +3,20 @@ import { getRepository } from "typeorm";
 
 import { User } from "../entity/User";
 
+/**
+ * The controller for all things related to users
+ * @class
+ */
 class UserController {
-
+    /**
+     * The function that returns all users on a server.
+     * Request body should be empty.
+     * Should not be exposed.
+     * 
+     * @param req - the request object
+     * @param res - the response object
+     * @summary Return all users on a server
+     */
     static listAll = async (req: Request, res: Response) => {
         const userRepository = getRepository(User);
         const users = await userRepository.find({
@@ -15,6 +27,15 @@ class UserController {
         res.send(users);
     };
 
+    /**
+     * The function that returns a user based on an id.
+     * Request body must contain an id, which is a number.
+     * Should not be exposed.
+     * 
+     * @param req - the request object
+     * @param res - the response object
+     * @summary Get a single user based on id
+     */
     static getOneById = async (req: Request, res: Response) => {
         //Get the ID from the url
         const id: number = req.body.id || req.body.userId;
@@ -31,6 +52,14 @@ class UserController {
         }
     };
 
+    /**
+     * The function that creates a new user.
+     * Request body must contain the email, the username and the passowrd, all of which strings.
+     * 
+     * @param req - the request object
+     * @param res - the response object
+     * @summary Create new user
+     */
     static newUser = async (req: Request, res: Response) => {
         const { username, password, email } = req.body;
         
@@ -53,6 +82,14 @@ class UserController {
         res.status(201).send("User created");
     };
 
+    /**
+     * The function that modifies the user data.
+     * Request body must contain the email, the username and the passowrd, all of which strings and the user's id, which is a number.
+     * 
+     * @param req - the request object
+     * @param res - the response object
+     * @summary Modify user
+     */
     static editUser = async (req: Request, res: Response) => {
         const id = req.body.id;
 
@@ -78,6 +115,14 @@ class UserController {
         res.status(204).send();
     };
 
+    /**
+     * The function that deletes the user.
+     * Request body must contain the user's id, which is a number.
+     * 
+     * @param req - the request object
+     * @param res - the response object
+     * @summary Delete user
+     */
     static deleteUser = async (req: Request, res: Response) => {
         const id = req.body.id;
 
