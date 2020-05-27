@@ -2,8 +2,4 @@
 
 # onpass-server
 
-# onpass-server
-
-The backend part of onpass
-
-Responsible - Vladimir Ivanov
+The documentation for public classes and modules
